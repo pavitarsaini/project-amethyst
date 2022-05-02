@@ -1,10 +1,5 @@
-import { StatusBar } from 'expo-status-bar';
-import React, { useRef, useState } from 'react';
-import { Animated, ImageBackground, Platform, SafeAreaView, ScrollView, StyleSheet, Text, Touchable, TouchableOpacity, View, Image } from 'react-native';
-import NewsTile from './src/components/NewsTile';
-import { SafeAreaInsetsContext, SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { BlurView } from 'expo-blur';
-import { NavigationContainer } from '@react-navigation/native';
+import React, { createRef, Ref, useRef, useState } from 'react';
+import { ImageBackground, Platform, ScrollView, StyleSheet, Text, TouchableOpacity, View, Image, TextInput, TouchableWithoutFeedback } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import { Dimensions } from 'react-native';
@@ -13,122 +8,57 @@ var {
   height
 } = Dimensions.get('window');
 
-import night from './assets/night_time.png'; 
-
+import night from './assets/night_time.png';
 
 const Stack = createNativeStackNavigator();
 
+
 export default function App() {
+
+  const tile = React.useRef<View>(null);
+
+  const showRefPosition = () => {
+    console.log("button clicked, set focus and log position");
+    // this works and shows that i am using the ref correctly
+    tile.current.measure( (x, y, width, height) => {
+      console.log('x-pos: ' + x)
+      console.log('y-pos: ' + y)
+    })
+  };
+
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{
+    <ScrollView style={{backgroundColor: 'black'}}>
 
-        headerBackTitle: 'Back',
-        headerTintColor: '#FFF',
-      }}>
-        <Stack.Screen name="Home" component={Home} options={{
-          header: props =>    // Your custom header
-            <View
-              style={{
-                flexDirection: "coloum",
-                height: 100,
-                marginTop: Platform.OS == "ios" ? 20 : 0 // only for IOS to give StatusBar Space
-              }}
-            >
+      <View style={{height:80}}></View>
 
-              <View style={{
-                flex: 1,
-                backgroundColor: 'blue',
-                alignItems: 'center',
-                justifyContent: 'flex-end'
-              }}>
+      <TouchableWithoutFeedback onPress={showRefPosition}> 
 
-                <View style={{
-                  height: '60%',
-                  width: '85%',
-                  backgroundColor: 'green',
-                  borderRadius: 20,
-                  marginBottom: 10
-                }}></View>
+      <View ref={tile} style={{ height: height * (2 / 4), alignItems: 'center', justifyContent: 'center', flex: 1}}>
+      <Image source={night} style={{ width: '90%', height: '100%', borderRadius: 20, position: 'absolute'}}/>
 
+        <View style={{ height: '90%', width: '100%' }}>
+
+            <View style={{ flex: 1, alignItems: 'flex-start', justifyContent: 'center', marginLeft: 40, marginTop: 20 }}>
+
+              <View style={{ flex: 1.2 }}>
+                <Text style={{ fontSize: 14, fontWeight: 'bold', color: 'rgba(255, 255, 255, 0.6);', letterSpacing: 1, }}>TIPS AND TRICKS</Text>
               </View>
 
-            </View>,
+              <View style={{ flex: 15 }}>
+                <Text style={{ fontSize: 24, fontWeight: 'bold', color: 'white', letterSpacing: 0.5 }}>Night Time Exploration</Text>
+              </View>
 
-          headerLargeTitle: false,
-          headerTransparent: true,
-          headerBlurEffect: 'systemMaterialDark',
-          headerStyle: {
-            backgroundColor: 'transparent',
-          },
-          title: 'test'
-        }} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-}
+            </View>
 
-function Home() {
+        </View>
 
-  return (
-
-
-    <ScrollView contentInsetAdjustmentBehavior="automatic">
-
-      <View style={{ height: height * (2 / 4), backgroundColor: 'red', alignItems: 'center', justifyContent: 'center', flex: 1}}>
-      <View style={{
-                  height: '90%',
-                  width: '85%',
-                  backgroundColor: 'green',
-                  borderRadius: 20,
-                }}>
-                  
-                  <ImageBackground source={night} style={{ width: '100%', height: '100%', borderRadius: 20, overflow: 'hidden'}}>
-                  
-                  <View style={{flex:2, backgroundColor: 'blue', alignItems: 'flex-start', justifyContent: 'center', opacity: 0.5}}>
-                    
-                    <View style={{backgroundColor: 'pink', marginLeft: 10, opacity: 0.5}}>
-                    <Text style={{fontSize: 14, fontWeight: 'bold'}}>TIPS AND TRICKS</Text>
-                    </View>
-
-
-                    </View>
-                  <View style={{flex:15, backgroundColor: 'purple', opacity: 0.5}}>
-
-                  <View style={{backgroundColor: 'pink', marginLeft: 10, opacity: 0.5}}>
-                    <Text style={{fontSize: 24, fontWeight: 'bold'}}>Night Time Exploration</Text>
-                    </View>
-
-                  </View>
-                  </ImageBackground>
-
-
-                </View>
-      </View>
-
-      <View style={{ height: height * (2 / 4), backgroundColor: 'orange', alignItems: 'center', justifyContent: 'center'  }}>
-      <View style={{
-                  height: '90%',
-                  width: '85%',
-                  backgroundColor: 'green',
-                  borderRadius: 20,
-                }}></View>
-      </View>
-      <View style={{ height: height * (2 / 4), backgroundColor: 'red', alignItems: 'center', justifyContent: 'center'  }}>
-      <View style={{
-                  height: '90%',
-                  width: '85%',
-                  backgroundColor: 'green',
-                  borderRadius: 20,
-                }}></View>
-      </View>
+        </View>
+        </TouchableWithoutFeedback>
+      
 
     </ScrollView>
-
   );
-
 }
 
 const styles = StyleSheet.create({
 });
-
