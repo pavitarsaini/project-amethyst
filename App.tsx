@@ -22,12 +22,8 @@ export default function App() {
       
       <HomeTile></HomeTile>
       <HomeTile></HomeTile>
-        
       
 
     </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-});
